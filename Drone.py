@@ -12,12 +12,7 @@ net = cv2.dnn.readNetFromCaffe("./MobileNetSSD_deploy.prototxt.txt", "./MobileNe
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
-CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
-	"bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
-	"dog", "horse", "motorbike", "person", "pottedplant", "sheep",
-	"sofa", "train", "tvmonitor"]
-
-colors = np.random.uniform(0, 255, size=(len(CLASSES), 3))
+colors = np.random.uniform(0, 255, size=(21, 3))
 
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
@@ -32,14 +27,14 @@ holistic = mp_holistic.Holistic(
 
 drone = Tello()
 time.sleep(2.0)
-print("Connecting...")
+print("Connecting......")
 drone.connect()
 print("BATTERY: ")
 print(drone.get_battery())
 time.sleep(1.0)
-print("Loading...")
+print("Loading......")
 drone.streamon()
-print("Takeoff...")
+print("Takeoff......")
 drone.takeoff()
 cap = drone.get_video_capture()
 
@@ -67,13 +62,13 @@ def main():
                 success, image = cap.read()
                 input_buffer.put(image)
                 input_buffer2.put(image)
-                cv2.imshow('MediaPipe Holistic', image)
+                cv2.imshow('Drone Viewer', image)
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 switch = False
                 drone.streamoff()
                 drone.land()
-                print("Landing...")
+                print("Landing......")
                 print("BATTERY: ")
                 print(drone.get_battery())
                 drone.end()
@@ -119,7 +114,7 @@ def box(m):
         idx = int(detections[0, 0, 0, 1])
         confidence = detections[0, 0, 0, 2]
 
-        if CLASSES[idx] == "person" and confidence > 0.5:
+        if idx == 15 and confidence > 0.5:
             box = detections[0, 0, 0, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
 
