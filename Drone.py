@@ -5,8 +5,16 @@ import numpy as np
 from djitellopy import Tello
 import time
 import threading
-
 import tensorflow as tf
+import queue
+import asyncio
+
+class message :
+    frameImage: any = None
+    position = 0
+
+global switch
+switch = True
 
 net = cv2.dnn.readNetFromCaffe("./MobileNetSSD_deploy.prototxt.txt", "./MobileNetSSD_deploy.caffemodel")
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
@@ -24,6 +32,9 @@ holistic = mp_holistic.Holistic(
     model_complexity=0)
 
 
+input_buffer = queue.LifoQueue()
+input_buffer2 = queue.LifoQueue()
+
 
 drone = Tello()
 time.sleep(2.0)
@@ -38,17 +49,6 @@ print("Takeoff......")
 drone.takeoff()
 cap = drone.get_video_capture()
 
-class message :
-    frameImage: any = None
-    position = 0
-
-global switch
-switch = True
-
-import queue
-import asyncio
-input_buffer = queue.LifoQueue()
-input_buffer2 = queue.LifoQueue()
 
 def main():
         global m
