@@ -8,7 +8,7 @@ import threading
 
 import tensorflow as tf
 
-net = cv2.dnn.readNetFromCaffe("./MobileNetSSD_deploy.prototxt.txt", "./MobileNetSSD_deploy.caffemodel") #modify with the NN path
+net = cv2.dnn.readNetFromCaffe("./MobileNetSSD_deploy.prototxt.txt", "./MobileNetSSD_deploy.caffemodel")
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
@@ -164,21 +164,21 @@ def pose(m):
             marks = results.pose_landmarks.landmark
             z_index1 = marks[11].z
             z_index2 = marks[12].z
-            face_area = float(str(np.mean(z_index1 + z_index2))[1:5])
+            prepare = float(str(np.mean(z_index1 + z_index2))[1:5])
 
-            if 0.15 >= face_area:
+            if 0.15 >= prepare:
                 m.position = 20
-            elif 0.4 >= face_area:
+            elif 0.4 >= prepare:
                 m.position = 15
-            elif 0.5 >= face_area:
+            elif 0.5 >= prepare:
                 m.position = 5
-            elif 0.67 >= face_area:
+            elif 0.67 >= prepare:
                 m.position = 0
-            elif 0.68 >= face_area:
+            elif 0.68 >= prepare:
                 m.position = -5
-            elif 0.73 >= face_area:
+            elif 0.73 >= prepare:
                 m.position = -15
-            elif 0.74 <= face_area:
+            elif 0.74 <= prepare:
                 m.position = -30
 
 if __name__ == "__main__":
