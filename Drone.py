@@ -16,7 +16,7 @@ class message :
 global switch
 switch = True
 
-net = cv2.dnn.readNetFromCaffe("./MobileNetSSD_deploy.prototxt.txt", "./MobileNetSSD_deploy.caffemodel")
+net = cv2.dnn.readNetFromCaffe("./Model/MobileNetSSD_deploy.prototxt.txt", "./Model/MobileNetSSD_deploy.caffemodel")
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
